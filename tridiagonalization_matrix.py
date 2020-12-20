@@ -96,7 +96,7 @@ def QR_algorithm_with_shifts(b):
     n = A.shape[0]
     Q = np.eye(n)
     for i in range(0, n - 1):
-        while not check_last_line_and_column(A[0:n - i, 0:n - i], 1e-9):
+        while not check_last_line_and_column(A[0:n - i, 0:n - i], 1e-5):
             s = find_eigenvalue_22(A[n - 2 - i:n - i, n - 2 - i:n - i])
             A[0:n - i, 0:n - i] -= (s * np.eye(n - i))
             QR_algorithm_step(A[0:n - i, 0:n - i], Q)

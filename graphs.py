@@ -3,11 +3,11 @@ import search_eigvals as SE
 import tridiagonalization_matrix as TM
 
 
-def check_isomorphism(g_1, g_2):
+def check_degrees_different(g_1, g_2):
     n_1 = g_1.shape[0]
     n_2 = g_2.shape[0]
     if n_1 != n_2:
-        return 0
+        return True
     ds_1 = {}
     ds_2 = {}
     for i in range(0, n_1):
@@ -22,10 +22,18 @@ def check_isomorphism(g_1, g_2):
             ds_2[d_2] = 0
         ds_1[d_1] += 1
         ds_2[d_2] += 1
-    if ds_1 != ds_2:
+    return ds_1 != ds_2
+
+
+def check_isomorphism(g_1, g_2):
+    if check_degrees_different(g_1, g_2):
         return 0
-    sp_1 = np.array(SE.QR_algorithm(g_1)[0])
-    sp_2 = np.array(SE.QR_algorithm(g_2)[0])
+    tr_1 = TM.tridiagonalization(g_1)[0]
+    tr_2 = TM.tridiagonalization(g_2)[0]
+    sp_1 = TM.QR_algorithm_with_shifts(tr_1)[0]
+    sp_2 = TM.QR_algorithm_with_shifts(tr_2)[0]
+    sp_1.sort()
+    sp_2.sort()
     if not np.allclose(sp_1, sp_2):
         return 0
     return 1
