@@ -124,33 +124,50 @@ class TestTridiagonalization(unittest.TestCase):
 
 class TestGraphMethods(unittest.TestCase):
     def test_check_isomorphism_1(self):
-        b = np.array([[0., 1., 1., 4., 1.],
-                      [1., 0., 0., 2., 3.],
-                      [1., 0., 2., 2., 2.],
-                      [4., 2., 2., 0., 0.],
-                      [1., 3., 2., 0., 0.]])
+        a = np.array([[0, 1, 0, 1],  # 0 --- 1  isomorphic graphs
+                      [1, 0, 1, 0],  # |     |
+                      [0, 1, 0, 1],  # 3 --- 2
+                      [1, 0, 1, 0]])
 
-        c = np.array([[0., 1., 1., 1., 4.],
-                      [1., 0., 0., 3., 2.],
-                      [1., 0., 2., 2., 2.],
-                      [1., 3., 2., 0., 0.],
-                      [4., 2., 2., 0., 0.]])
+        b = np.array([[0, 1, 1, 0],  # 0 --- 1
+                      [1, 0, 0, 1],  # |     |
+                      [1, 0, 0, 1],  # 2 --- 3
+                      [0, 1, 1, 0]])
 
-        self.assertEqual(1, GR.check_isomorphism(b, c))
+        self.assertEqual(1, GR.check_isomorphism(a, b))
 
     def test_check_isomorphism_2(self):
-        b = np.array([[4., 1., 3., 3., 2.],
-                      [1., 0., 3., 1., 2.],
-                      [3., 3., 4., 3., 3.],
-                      [3., 1., 3., 4., 3.],
-                      [2., 2., 3., 3., 2.]])
+        a = np.array([[0, 1, 1, 1],  # K_4     non-isomorphic graphs with
+                      [1, 0, 1, 1],  # -       different degree sequences
+                      [1, 1, 0, 1],
+                      [1, 1, 1, 0]])
 
-        c = np.array([[4., 1., 1., 3., 4.],
-                      [1., 4., 2., 4., 2.],
-                      [1., 2., 4., 0., 0.],
-                      [3., 4., 0., 2., 1.],
-                      [4., 2., 0., 1., 2.]])
-        self.assertEqual(0, GR.check_isomorphism(b, c))
+        b = np.array([[0, 1, 1, 1],  # K_{1, 3}
+                      [1, 0, 0, 0],
+                      [1, 0, 0, 0],
+                      [1, 0, 0, 0]])
+
+        self.assertEqual(0, GR.check_isomorphism(a, b))
+
+    def test_check_isomorphism_3(self):
+        a = np.array([[0, 1, 0, 0, 0, 0, 0, 0],  # non-isomorphic graphs
+                      [1, 0, 1, 1, 0, 0, 0, 0],  # with same degree sequences
+                      [0, 1, 0, 0, 1, 0, 0, 0],  # but with different specters
+                      [0, 1, 0, 0, 0, 1, 0, 0],
+                      [0, 0, 1, 0, 0, 0, 1, 0],
+                      [0, 0, 0, 1, 0, 0, 0, 1],
+                      [0, 0, 0, 0, 1, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 1, 0, 0]])
+
+        b = np.array([[0, 1, 0, 0, 0, 0, 0, 0],
+                      [1, 0, 1, 0, 0, 0, 0, 0],
+                      [0, 1, 0, 1, 0, 0, 0, 0],
+                      [0, 0, 1, 0, 1, 0, 0, 0],
+                      [0, 0, 0, 1, 0, 1, 0, 0],
+                      [0, 0, 0, 0, 1, 0, 1, 1],
+                      [0, 0, 0, 0, 0, 1, 0, 0],
+                      [0, 0, 0, 0, 0, 1, 0, 0]])
+        self.assertEqual(0, GR.check_isomorphism(a, b))
 
     def test_calculate_a_1(self):
         for n in range(2, 11):

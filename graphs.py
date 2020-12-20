@@ -34,6 +34,8 @@ def check_isomorphism(g_1, g_2):
     sp_2 = TM.QR_algorithm_with_shifts(tr_2)[0]
     sp_1.sort()
     sp_2.sort()
+    print(sp_1)
+    print(sp_2)
     if not np.allclose(sp_1, sp_2):
         return 0
     return 1
